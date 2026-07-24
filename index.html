@@ -1,1 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Walking the Talk — The Frederick Douglass Scotland Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1D2023;
+    --ink-soft:#52565B;
+    --paper:#EEE8DB;
+    --paper-raised:#F6F2E8;
+    --paper-line:#DDD4C0;
+    --stone:#8B8984;
+    --sandstone:#A0552C;
+    --verdigris:#4F6358;
+    --ochre:#B8923D;
+    --rust:#9C4A5C;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', -apple-system, sans-serif;
+    line-height:1.55;
+  }
+  a{color:var(--sandstone);}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px 120px;}
 
+  header.hero{
+    position:relative;
+    min-height:520px;
+    display:flex;
+    align-items:flex-end;
+    background:
+      linear-gradient(180deg, rgba(20,18,20,0.35) 0%, rgba(20,18,20,0.55) 55%, rgba(20,18,20,0.92) 100%),
+      url('images/sundial.jpg');
+    background-size:cover;
+    background-position:center 25%;
+    color:#F6F2E8;
+  }
+  .hero-inner{max-width:920px;margin:0 auto;padding:60px 24px 40px;width:100%;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:#D8CDBB;
+    margin:0 0 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px;height:1px;background:#D8CDBB;
+    display:inline-block;
+  }
+  h1{
+    font-family:'Archivo', sans-serif;
+    font-weight:800;
+    font-size:clamp(36px, 6.5vw, 58px);
+    line-height:0.98;
+    margin:0 0 16px;
+    letter-spacing:-0.01em;
+    color:#fff;
+  }
+  h1 span{color:#D9A876;}
+  .subhead{
+    font-size:16px;
+    color:#E4DDCC;
+    max-width:560px;
+    margin:0 0 30px;
+  }
+
+  .search-row{display:flex;gap:10px;align-items:stretch;}
+  .search-box{
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:rgba(246,242,232,0.96);
+    border:none;
+    border-radius:6px;
+    padding:0 16px;
+    box-shadow:0 6px 24px rgba(0,0,0,0.25);
+  }
+  .search-box svg{flex:none;opacity:0.5;color:var(--ink);}
+  .search-box input{
+    border:none;
+    background:transparent;
+    outline:none;
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+    padding:15px 0;
+    width:100%;
+    color:var(--ink);
+  }
+  .search-box input::placeholder{color:#8b8471;}
+  .result-count{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:#D8CDBB;
+    margin-top:12px;
+    letter-spacing:0.02em;
+  }
+  .result-count b{color:#fff;}
+
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+  .chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.03em;
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid rgba(246,242,232,0.35);
+    background:rgba(29,32,35,0.35);
+    cursor:pointer;
+    color:#F0EBDD;
+    user-select:none;
+    transition:all .12s ease;
+  }
+  .chip:hover{border-color:#fff;}
+  .chip.active{background:#F6F2E8;color:var(--ink);border-color:#F6F2E8;}
+  .chip .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;position:relative;top:-1px;}
+
+  .strip-section{padding:44px 24px 8px;max-width:920px;margin:0 auto;}
+  .strip-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--ink-soft);
+    margin:0 0 16px;
+  }
+  .photo-strip{display:grid;grid-template-columns:repeat(4, 1fr);gap:12px;}
+  .photo-card{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:3/4;background:var(--stone);}
+  .photo-card img{width:100%;height:100%;object-fit:cover;display:block;}
+  .photo-caption{
+    position:absolute;left:0;right:0;bottom:0;
+    background:linear-gradient(0deg, rgba(20,18,20,0.88), transparent);
+    color:#F6F2E8;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;line-height:1.4;
+    padding:20px 10px 10px;
+  }
+  .photo-caption .place{font-weight:600;display:block;}
+  .photo-caption .note{opacity:0.75;font-size:9.5px;}
+
+  @media (max-width:700px){.photo-strip{grid-template-columns:repeat(2, 1fr);}}
+
+  .tally{display:flex;margin:40px 0 8px;border-radius:6px;overflow:hidden;background:var(--ink);}
+  .tally-item{flex:1;padding:16px 16px;border-right:1px solid rgba(246,242,232,0.12);font-family:'IBM Plex Mono', monospace;}
+  .tally-item:last-child{border-right:none;}
+  .tally-num{font-size:24px;font-weight:600;color:#F6F2E8;}
+  .tally-label{font-size:10.5px;text-transform:uppercase;letter-spacing:0.08em;color:#B8B2A4;margin-top:2px;}
+
+  .catalog{margin-top:24px;}
+  .card{
+    background:var(--paper-raised);
+    border:1px solid var(--paper-line);
+    border-radius:8px;
+    padding:24px 26px;
+    margin-bottom:14px;
+    position:relative;
+    transition:box-shadow .12s ease, transform .12s ease;
+  }
+  .card:hover{box-shadow:0 6px 20px rgba(29,32,35,0.08); transform:translateY(-1px);}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:6px;}
+  .card-title{font-family:'Archivo', sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.005em;}
+  .card-meta{font-family:'IBM Plex Mono', monospace;font-size:11.5px;color:var(--ink-soft);margin-top:5px;}
+  .card-meta .sep{margin:0 7px;opacity:.5;}
+
+  .badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;
+    padding:6px 11px;
+    border-radius:20px;white-space:nowrap;flex:none;color:#fff;
+  }
+  .badge.confirmed{background:var(--verdigris);}
+  .badge.probable{background:var(--ochre);}
+  .badge.disputed{background:var(--rust);}
+
+  .card-body{font-size:15px;color:var(--ink);margin:12px 0 14px;max-width:640px;}
+  .card-note{font-size:13px;color:var(--ink-soft);background:var(--paper);border-radius:5px;padding:10px 14px;margin:12px 0;}
+  .card-footer{
+    display:flex;flex-wrap:wrap;align-items:center;gap:14px;
+    margin-top:14px;padding-top:14px;border-top:1px solid var(--paper-line);
+    font-family:'IBM Plex Mono', monospace;font-size:11.5px;
+  }
+  .source-tag{color:var(--ink-soft);}
+  .card-footer a{color:var(--sandstone);text-decoration:none;font-weight:600;}
+  .card-footer a:hover{text-decoration:underline;}
+
+  .empty{text-align:center;padding:60px 20px;color:var(--ink-soft);font-family:'IBM Plex Mono', monospace;font-size:13px;}
+
+  footer{
+    max-width:920px;margin:40px auto 0;padding:24px;
+    font-family:'IBM Plex Mono', monospace;font-size:11px;color:var(--ink-soft);
+    border-top:1px solid var(--paper-line);line-height:1.7;
+  }
+  footer a{color:var(--sandstone);}
+
+  @media (max-width:600px){
+    .tally{flex-wrap:wrap;}
+    .tally-item{flex:1 1 50%;border-bottom:1px solid rgba(246,242,232,0.12);}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">A working archive · est. 2026</p>
+    <h1>Walking<br><span>the Talk</span></h1>
+    <p class="subhead">Confirmed sites from Frederick Douglass's 1846 lecture tour of Scotland. Every date here is a claim, like the one worn into this stone — some sharp, some faded, all rated by how sure we actually are.</p>
+
+    <div class="search-row">
+      <div class="search-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="searchInput" type="text" placeholder="Search a place, a date, a source…" autocomplete="off">
+      </div>
+    </div>
+    <div class="result-count" id="resultCount"></div>
+
+    <div class="filters" id="filterRow">
+      <div class="chip active" data-filter="all">All entries</div>
+      <div class="chip" data-filter="confirmed"><span class="dot" style="background:var(--verdigris)"></span>Confirmed</div>
+      <div class="chip" data-filter="probable"><span class="dot" style="background:var(--ochre)"></span>Probable</div>
+      <div class="chip" data-filter="disputed"><span class="dot" style="background:var(--rust)"></span>Disputed</div>
+      <div class="chip" data-filter="cat:lodging">Lodging</div>
+      <div class="chip" data-filter="cat:venue">Lecture venue</div>
+      <div class="chip" data-filter="cat:transit">Transit</div>
+      <div class="chip" data-filter="cat:transcript">Has full transcript</div>
+    </div>
+  </div>
+</header>
+
+<section class="strip-section">
+  <p class="strip-label">Photographed on location, Merchant City &amp; around, 2026 — not all pictured spots are confirmed Douglass sites; see captions</p>
+  <div class="photo-strip">
+    <div class="photo-card">
+      <img src="images/quatrefoil-railing-2.jpg" alt="Cast iron quatrefoil railing at 106 Candleriggs, part of the City Halls complex">
+      <div class="photo-caption"><span class="place">Railing, 106 Candleriggs</span><span class="note">Same listed building complex as City Halls (60–106 Candleriggs) — his main lecture venue</span></div>
+    </div>
+    <div class="photo-card">
+      <img src="images/royal-coat-of-arms.jpg" alt="Weathered royal coat of arms with unicorn and lion supporters">
+      <div class="photo-caption"><span class="place">Royal coat of arms</span><span class="note">Glasgow city centre</span></div>
+    </div>
+    <div class="photo-card">
+      <img src="images/nicholas-street.jpg" alt="Nicholas Street sign and bronze plaque in Merchant City">
+      <div class="photo-caption"><span class="place">Nicholas Street</span><span class="note">Merchant City — a block from City Halls and Ingram Street</span></div>
+    </div>
+    <div class="photo-card">
+      <img src="images/allegorical-relief.jpg" alt="Sandstone allegorical relief figure, Bridgeton, Glasgow">
+      <div class="photo-caption"><span class="place">Allegorical relief</span><span class="note">Bridgeton — over a kilometre from the Merchant City cluster, no direct connection to the tour</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="tally" id="tally"></div>
+  <div class="catalog" id="catalog"></div>
+</div>
+
+<footer>
+  Sources cited per entry. Core references: Frederick Douglass Papers Project (digital edition) · National Library of Scotland, maps.nls.uk · bulldozia.com, "Frederick Douglass in Scotland" (A. Pettinger) · Glasgow Life / Glasgow Museums, "Legacies of Slavery and Empire" · Historic Environment Scotland. <a href="sources.html">Full bibliography →</a><br>
+  This is a working document, not a finished record — confidence levels will change as sourcing improves. Built to be argued with.
+</footer>
+
+<script>
+let DATA = [];
+let loadError = false;
+
+async function loadData(){
+  try {
+    const res = await fetch('data/entries.json');
+    if(!res.ok) throw new Error('Failed to load entries.json');
+    DATA = await res.json();
+  } catch (err) {
+    loadError = true;
+    console.error('Could not load data/entries.json:', err);
+  }
+  renderTally();
+  render();
+}
+
+const catalog = document.getElementById('catalog');
+const searchInput = document.getElementById('searchInput');
+const resultCount = document.getElementById('resultCount');
+const tallyEl = document.getElementById('tally');
+const chips = document.querySelectorAll('.chip');
+
+let activeFilter = 'all';
+
+function renderTally(){
+  const counts = {confirmed:0, probable:0, disputed:0};
+  DATA.forEach(d=>counts[d.conf]++);
+  tallyEl.innerHTML = `
+    <div class="tally-item"><div class="tally-num">${DATA.length}</div><div class="tally-label">Total entries</div></div>
+    <div class="tally-item"><div class="tally-num" style="color:#7FA396">${counts.confirmed}</div><div class="tally-label">Confirmed</div></div>
+    <div class="tally-item"><div class="tally-num" style="color:#D9B65E">${counts.probable}</div><div class="tally-label">Probable</div></div>
+    <div class="tally-item"><div class="tally-num" style="color:#D98CA0">${counts.disputed}</div><div class="tally-label">Disputed</div></div>
+  `;
+}
+
+function matchesFilter(item){
+  if(activeFilter==='all') return true;
+  if(activeFilter.startsWith('cat:')) return item.cat === activeFilter.slice(4);
+  return item.conf === activeFilter;
+}
+
+function matchesSearch(item, q){
+  if(!q) return true;
+  const hay = [item.name, item.city, item.date, item.body, item.note||'', item.source].join(' ').toLowerCase();
+  return hay.includes(q.toLowerCase());
+}
+
+function render(){
+  const q = searchInput.value.trim();
+  const filtered = DATA.filter(item => matchesFilter(item) && matchesSearch(item, q));
+
+  resultCount.innerHTML = `Showing <b>${filtered.length}</b> of <b>${DATA.length}</b> entries`;
+
+  if(loadError){
+    catalog.innerHTML = `<div class="empty">Couldn't load data/entries.json.<br>If you opened this file directly (file://), most browsers block local JSON fetches — run a local server instead, e.g.<br><code>python3 -m http.server</code><br>then open http://localhost:8000</div>`;
+    return;
+  }
+
+  if(filtered.length === 0){
+    catalog.innerHTML = `<div class="empty">No entries match — try clearing filters or search.</div>`;
+    return;
+  }
+
+  catalog.innerHTML = filtered.map(item => `
+    <div class="card" data-conf="${item.conf}">
+      <div class="card-top">
+        <div>
+          <div class="card-title">${item.name}</div>
+          <div class="card-meta">${item.city}<span class="sep">·</span>${item.date}<span class="sep">·</span>${item.cat}</div>
+        </div>
+        <div class="badge ${item.conf}">${item.conf}</div>
+      </div>
+      <div class="card-body">${item.body}</div>
+      ${item.note ? `<div class="card-note">${item.note}</div>` : ''}
+      <div class="card-footer">
+        <span class="source-tag">Source: ${item.source}</span>
+        <a href="${item.url}" target="_blank" rel="noopener">${item.linkLabel} →</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+chips.forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    chips.forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    activeFilter = chip.dataset.filter;
+    render();
+  });
+});
+
+searchInput.addEventListener('input', render);
+
+catalog.innerHTML = `<div class="empty">Loading the archive…</div>`;
+loadData();
+</script>
+</body>
+</html>
