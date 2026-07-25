@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Walking the Talk — The Frederick Douglass Scotland Archive</title>
@@ -269,7 +270,10 @@
     </div>
   </div>
 </section>
-
+<section class="strip-section">
+  <p class="strip-label">Places tied to Douglass's 1846 Scotland tour</p>
+  <div id="douglassMap" style="height:420px;border-radius:8px;margin-top:12px;"></div>
+</section>
 <div class="wrap">
   <div class="tally" id="tally"></div>
   <div class="catalog" id="catalog"></div>
@@ -378,6 +382,23 @@ searchInput.addEventListener('input', render);
 
 catalog.innerHTML = `<div class="empty">Loading the archive…</div>`;
 loadData();
+  
+const douglassMap = L.map('douglassMap').setView([55.90, -3.7], 7);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(douglassMap);
+
+const walkPoints = [
+  { name: "City Halls, Candleriggs", lat: 55.8590362, lng: -4.2451528, note: "His main Glasgow lecture venue." },
+  { name: "Duke of Wellington statue, Royal Exchange Square", lat: 55.8601152, lng: -4.2520123, note: "A short walk from the Ingram Street lecture site." },
+  { name: "Ingram Street", lat: 55.8598601, lng: -4.2475458, note: "Near where the Glasgow Assembly Rooms stood." },
+  { name: "Assembly Rooms, 54 George Street, Edinburgh", lat: 55.9531371, lng: -3.1986888, note: "He lectured here on 1 May and again on 24 Sep 1846." }
+];
+
+walkPoints.forEach(p => {
+  L.marker([p.lat, p.lng]).addTo(douglassMap)
+    .bindPopup(`<strong>${p.name}</strong><br>${p.note}`);
+});
 </script>
 </body>
 </html>
