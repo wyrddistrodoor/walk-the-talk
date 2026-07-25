@@ -327,7 +327,13 @@ function matchesFilter(item){
   return item.conf === activeFilter;
 }
 function moonPhase(dateStr){
-  const d = new Date(dateStr + "T12:00:00");
+ if(!dateStr) return null;
+  const monthNames = "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec";
+  const dayMonthMatch = dateStr.match(new RegExp(`(\\d{1,2})[^0-9]{0,10}?(${monthNames})`, "i"));
+  const yearMatch = dateStr.match(/(\d{4})/);
+  if(!dayMonthMatch || !yearMatch) return null;
+  const cleanDate = `${dayMonthMatch[1]} ${dayMonthMatch[2]} ${yearMatch[1]}`;
+  const d = new Date(cleanDate + " 12:00:00");
   const lp = 2551443; // length of synodic month in seconds
   const newMoonRef = new Date("2000-01-06T18:14:00Z"); // known new moon
   const phase = (((d - newMoonRef) / 1000) % lp + lp) % lp;
