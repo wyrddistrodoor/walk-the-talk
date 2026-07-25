@@ -326,7 +326,22 @@ function matchesFilter(item){
   if(activeFilter.startsWith('cat:')) return item.cat === activeFilter.slice(4);
   return item.conf === activeFilter;
 }
-
+function moonPhase(dateStr){
+  const d = new Date(dateStr + "T12:00:00");
+  const lp = 2551443; // length of synodic month in seconds
+  const newMoonRef = new Date("2000-01-06T18:14:00Z"); // known new moon
+  const phase = (((d - newMoonRef) / 1000) % lp + lp) % lp;
+  const pct = phase / lp;
+  if(isNaN(d.getTime())) return null;
+  if(pct < 0.03 || pct > 0.97) return "🌑 New Moon";
+  if(pct < 0.22) return "🌒 Waxing Crescent";
+  if(pct < 0.28) return "🌓 First Quarter";
+  if(pct < 0.47) return "🌔 Waxing Gibbous";
+  if(pct < 0.53) return "🌕 Full Moon";
+  if(pct < 0.72) return "🌖 Waning Gibbous";
+  if(pct < 0.78) return "🌗 Last Quarter";
+  return "🌘 Waning Crescent";
+}
 function matchesSearch(item, q){
   if(!q) return true;
   const hay = [item.name, item.city, item.date, item.body, item.note||'', item.source].join(' ').toLowerCase();
@@ -354,8 +369,7 @@ function render(){
       <div class="card-top">
         <div>
           <div class="card-title">${item.name}</div>
-          <div class="card-meta">${item.city}<span class="sep">·</span>${item.date}<span class="sep">·</span>${item.cat}</div>
-        </div>
+         <div class="card-meta">${item.city}<span class="sep">·</span>${item.date}${moonPhase(item.date) ? `<span class="sep">·</span>${moonPhase(item.date)}` : ''}<span class="sep">·</span>${item.cat}</div>
         <div class="badge ${item.conf}">${item.conf}</div>
 </div>     ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width:100%;border-radius:6px;max-height:420px;object-fit:cover;margin:0 0 12px;;">` : ''}
     
